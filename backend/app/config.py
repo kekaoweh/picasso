@@ -5,6 +5,21 @@ from pathlib import Path
 from cryptography.fernet import Fernet
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
+FONTS_DIR = Path(__file__).resolve().parent / "fonts"
+
+
+def _load_dotenv(path: Path) -> None:
+    """Read KEY=value lines from backend/.env (e.g. PEXELS_API_KEY) without overriding the environment."""
+    if not path.exists():
+        return
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+_load_dotenv(BACKEND_DIR / ".env")
 DATA_DIR = Path(os.environ.get("PICASSO_DATA_DIR", BACKEND_DIR / "data")).resolve()
 UPLOADS_DIR = DATA_DIR / "uploads"
 THUMBS_DIR = DATA_DIR / "thumbs"
@@ -57,6 +72,7 @@ def ffmpeg_path() -> str:
 
 FONT_CANDIDATES = [
     os.environ.get("PICASSO_FONT", ""),
+    str(FONTS_DIR / "Geist-SemiBold.ttf"),
     "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
     "/System/Library/Fonts/Supplemental/Arial.ttf",
     "/Library/Fonts/Arial.ttf",
@@ -65,7 +81,11 @@ FONT_CANDIDATES = [
 ]
 
 
-def font_path() -> str:
+def font_path(weight: str = "semibold") -> str:
+    """Caption font. Geist ships with the app (SIL OFL); system fonts are a fallback."""
+    bundled = FONTS_DIR / {"medium": "Geist-Medium.ttf", "semibold": "Geist-SemiBold.ttf", "bold": "Geist-Bold.ttf"}[weight]
+    if not os.environ.get("PICASSO_FONT") and bundled.exists():
+        return str(bundled)
     for candidate in FONT_CANDIDATES:
         if candidate and Path(candidate).exists():
             return candidate

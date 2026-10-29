@@ -159,8 +159,11 @@ def _text_filter(clip: Clip, style: Style, width: int, height: int, workdir: Pat
         "lower_third": f"h*0.70",
     }[position]
     color = style.caption_color.lstrip("#")
+    # Captions ease in and out over a quarter second instead of popping on and off.
+    fade = min(0.25, clip.duration / 4)
+    alpha = f"if(lt(t,{fade:.3f}),t/{fade:.3f},if(gt(t,{clip.duration - fade:.3f}),({clip.duration:.3f}-t)/{fade:.3f},1))"
     parts = [
-        f"fontfile='{_escape_path(font_path())}'",
+        f"fontfile='{_escape_path(font_path('bold' if overlay.style == 'title' else 'semibold'))}'",
         f"textfile='{_escape_path(str(text_file))}'",
         f"fontsize={fontsize}",
         f"fontcolor=0x{color}",
@@ -168,11 +171,12 @@ def _text_filter(clip: Clip, style: Style, width: int, height: int, workdir: Pat
         f"line_spacing={int(fontsize * 0.25)}",
         "x=(w-text_w)/2",
         f"y={y}",
+        f"alpha='{alpha}'",
     ]
     if style.caption_box and overlay.style != "title":
-        parts += ["box=1", "boxcolor=black@0.5", f"boxborderw={int(fontsize * 0.35)}"]
+        parts += ["box=1", "boxcolor=0x14120f@0.48", f"boxborderw={int(fontsize * 0.45)}|{int(fontsize * 0.7)}"]
     else:
-        parts += ["shadowcolor=black@0.6", "shadowx=2", "shadowy=2"]
+        parts += ["shadowcolor=black@0.55", "shadowx=0", f"shadowy={max(1, fontsize // 22)}"]
     return "drawtext=" + ":".join(parts)
 
 
