@@ -2,6 +2,7 @@ import secrets
 from datetime import datetime, timezone
 from typing import Optional
 
+from sqlalchemy import inspect, text
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 from .config import DATABASE_URL
@@ -80,6 +81,11 @@ class Asset(SQLModel, table=True):
     height: Optional[int] = None
     has_audio: bool = False
     note: str = ""
+    # Where it came from: "upload", or the footage library the editor found it in.
+    source: str = "upload"
+    source_url: str = ""
+    credit: str = ""
+    license: str = ""
     created_at: datetime = Field(default_factory=now)
 
 
@@ -143,8 +149,32 @@ PRESET_STYLES = [
 ]
 
 
+def _add_missing_columns() -> None:
+    """Tiny forward-only migration: add columns introduced after a table was created."""
+    inspector = inspect(engine)
+    for table in SQLModel.metadata.sorted_tables:
+        if not inspector.has_table(table.name):
+            continue
+        existing = {c["name"] for c in inspector.get_columns(table.name)}
+        for col in table.columns:
+            if col.name in existing:
+                continue
+            default = col.default.arg if col.default is not None and not callable(col.default.arg) else None
+            if isinstance(default, bool):
+                literal = str(int(default))
+            elif isinstance(default, (int, float)):
+                literal = repr(default)
+            elif isinstance(default, str):
+                literal = "'" + default.replace("'", "''") + "'"
+            else:
+                literal = "NULL"
+            with engine.begin() as conn:
+                conn.execute(text(f'ALTER TABLE "{table.name}" ADD COLUMN "{col.name}" {col.type.compile(engine.dialect)} DEFAULT {literal}'))
+
+
 def init_db() -> None:
     SQLModel.metadata.create_all(engine)
+    _add_missing_columns()
     with Session(engine) as session:
         for preset in PRESET_STYLES:
             if not session.get(Style, preset["id"]):

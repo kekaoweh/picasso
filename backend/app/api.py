@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 from sqlmodel import Session, col, or_, select
 from sse_starlette.sse import EventSourceResponse
 
-from . import pipeline
+from . import pipeline, sources
 from .auth import current_user
 from .config import THUMBS_DIR, UPLOADS_DIR
 from .db import Asset, Project, Run, RunEvent, Style, User, engine, get_session, now
@@ -39,6 +39,10 @@ class AssetOut(BaseModel):
     has_audio: bool
     note: str
     has_thumb: bool
+    source: str
+    source_url: str
+    credit: str
+    license: str
     created_at: datetime
 
 
@@ -96,7 +100,8 @@ class StyleOut(BaseModel):
 def asset_out(a: Asset) -> AssetOut:
     return AssetOut(id=a.id, kind=a.kind, role=a.role, name=a.name, duration=a.duration,
                     width=a.width, height=a.height, has_audio=a.has_audio, note=a.note,
-                    has_thumb=bool(a.thumb_path), created_at=a.created_at)
+                    has_thumb=bool(a.thumb_path), source=a.source, source_url=a.source_url,
+                    credit=a.credit, license=a.license, created_at=a.created_at)
 
 
 def run_out(r: Run) -> RunOut:
@@ -497,6 +502,12 @@ def run_video(run_id: str, download: bool = False, user: User = Depends(current_
     safe = "".join(ch for ch in (p.name if p else "video") if ch.isalnum() or ch in " -_").strip() or "video"
     return FileResponse(f, media_type="video/mp4", filename=f"{safe}.mp4",
                         content_disposition_type="attachment" if download else "inline")
+
+
+@router.get("/sources")
+def footage_sources(user: User = Depends(current_user)):
+    """Which footage libraries the editor can search right now."""
+    return sources.provider_status()
 
 
 @router.get("/meta")
