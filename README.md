@@ -1,5 +1,7 @@
 # Picasso
 
+Created and maintained by **Keka Oweh** ([github.com/kekaoweh](https://github.com/kekaoweh)).
+
 An AI video editor where an agent makes the whole video. You describe what you want, add footage,
 references and music, and pick a style. Claude watches the media, writes a script, cuts a timeline,
 and the backend renders an MP4. Ask for changes in plain language to get a new version.
@@ -82,3 +84,8 @@ five built-in styles, and users can create their own on the Styles page.
 - Voiceover / TTS and auto-captions from speech.
 - A background job queue. Runs are asyncio tasks in the API process, so use a single worker, or add
   Redis/Celery to scale out.
+
+## Author
+
+**Keka Oweh** ([github.com/kekaoweh](https://github.com/kekaoweh)). Picasso is designed and owned by Keka
+Oweh. Development is assisted by Claude, which is credited as a co-author on individual commits.

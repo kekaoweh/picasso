@@ -3,6 +3,7 @@ name = "picasso-backend"
 version = "0.1.0"
 description = "Picasso API: FastAPI service that runs the Claude editing agent and renders videos with ffmpeg"
 requires-python = ">=3.12"
+authors = [{ name = "Keka Oweh" }]
 dependencies = [
     "claude-agent-sdk>=0.2.174",
     "cryptography>=50.0.2",
@@ -14,6 +15,9 @@ dependencies = [
     "sse-starlette>=3.6.0",
     "uvicorn[standard]>=0.54.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/kekaoweh/picasso"
 
 [tool.uv]
 package = false
