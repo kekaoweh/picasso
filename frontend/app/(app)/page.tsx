@@ -44,10 +44,10 @@ export default function StudioPage() {
   const today = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="studio-glow h-full overflow-y-auto">
       <div className="mx-auto max-w-[1040px] px-6 pt-12 pb-28 sm:px-12 sm:pt-16">
         {/* Masthead */}
-        <div className="flex items-baseline justify-between border-b border-fg/80 pb-2.5">
+        <div className="flex items-baseline justify-between border-b border-line-strong pb-2.5">
           <span className="label !text-muted">The studio of {user.name}</span>
           <span className="label hidden sm:inline">{today}</span>
         </div>
@@ -70,7 +70,7 @@ export default function StudioPage() {
                 if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) begin();
               }}
               rows={4}
-              placeholder="Describe the piece: its subject, who it's for, how it should feel. Footage, stills and music come next."
+              placeholder="Describe the piece: its subject, who it's for, how it should feel. The editor finds the footage."
               className="block max-h-80 min-h-32 w-full resize-none bg-transparent px-5 pt-4 pb-2 text-[16px] leading-relaxed outline-none placeholder:text-faint"
             />
             <div className="flex flex-wrap items-end gap-x-8 gap-y-4 border-t border-line px-5 py-4">

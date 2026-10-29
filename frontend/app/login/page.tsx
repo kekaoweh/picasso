@@ -79,7 +79,7 @@ export default function LoginPage() {
             <span className="text-muted">We&apos;ll make it.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
-            Bring footage, stills and references. Picasso studies them, writes the piece and cuts it, frame by frame.
+            Describe it in a sentence or a page. Picasso researches the subject, finds licensed footage, writes the piece and cuts it, frame by frame.
           </p>
 
           <form onSubmit={submit} className="mt-10">
@@ -94,7 +94,7 @@ export default function LoginPage() {
                     className="rounded-[2px] p-1.5 text-faint transition-colors hover:bg-hover hover:text-fg"
                     aria-label="Copy command"
                   >
-                    {copied ? <Check className="size-3.5 text-green" strokeWidth={1.5} /> : <Copy className="size-3.5" strokeWidth={1.5} />}
+                    {copied ? <Check className="size-3.5 text-sage" strokeWidth={1.5} /> : <Copy className="size-3.5" strokeWidth={1.5} />}
                   </button>
                 </div>
                 <p className="mt-2 text-[13px] leading-relaxed text-faint">
@@ -137,7 +137,7 @@ export default function LoginPage() {
             </ol>
 
             {error && (
-              <p className="mt-6 border-l-2 border-red bg-red-soft px-3.5 py-2.5 text-[13px] leading-relaxed text-red">{error}</p>
+              <p className="mt-6 border-l-2 border-brick bg-brick-soft px-3.5 py-2.5 text-[13px] leading-relaxed text-brick">{error}</p>
             )}
 
             <Button type="submit" variant="primary" size="lg" className="mt-9 w-full" loading={busy} disabled={!looksValid}>

@@ -27,7 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         variant === "primary" && "bg-fg text-bg hover:bg-fg/85",
         variant === "secondary" && "border border-line-strong bg-paper text-fg hover:border-fg/40",
         variant === "ghost" && "text-muted hover:bg-hover hover:text-fg",
-        variant === "danger" && "text-red hover:bg-red-soft",
+        variant === "danger" && "text-brick hover:bg-brick-soft",
         className,
       )}
       {...rest}
@@ -63,9 +63,9 @@ export function Pill({
       className={clsx(
         "inline-flex items-center gap-1.5 font-mono text-[10.5px] font-medium tracking-[0.12em] whitespace-nowrap uppercase",
         tone === "gray" && "text-faint",
-        tone === "blue" && "text-blue",
-        tone === "green" && "text-green",
-        tone === "red" && "text-red",
+        tone === "blue" && "text-dusk",
+        tone === "green" && "text-sage",
+        tone === "red" && "text-brick",
         tone === "accent" && "text-accent",
         className,
       )}
@@ -141,7 +141,7 @@ export function MenuItem({
       className={clsx(
         "flex w-full items-center gap-2.5 rounded-[2px] px-2.5 py-1.5 text-left text-[13.5px] transition-colors hover:bg-hover",
         active && "bg-hover",
-        danger ? "text-red" : "text-fg",
+        danger ? "text-brick" : "text-fg",
       )}
     >
       {icon && <span className="flex w-4 shrink-0 justify-center text-faint">{icon}</span>}

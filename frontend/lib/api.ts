@@ -16,8 +16,15 @@ export type Asset = {
   has_audio: boolean;
   note: string;
   has_thumb: boolean;
+  /** "upload", or the footage library the editor found it in. */
+  source: string;
+  source_url: string;
+  credit: string;
+  license: string;
   created_at: string;
 };
+
+export type FootageSource = { name: string; kinds: AssetKind[]; enabled: boolean; needs_key: string | null };
 
 export type Run = {
   id: string;
@@ -158,6 +165,7 @@ export const api = {
   deleteAsset: (id: string) => request(`/assets/${id}`, { method: "DELETE" }),
 
   styles: () => request<Style[]>("/styles"),
+  sources: () => request<FootageSource[]>("/sources"),
   createStyle: (body: StyleInput) => request<Style>("/styles", { method: "POST", body: json(body) }),
   updateStyle: (id: string, body: StyleInput) =>
     request<Style>(`/styles/${id}`, { method: "PUT", body: json(body) }),

@@ -83,16 +83,16 @@ export function AssetGrid({
         ) : (
           <>
             <p className="text-[15px] font-medium text-muted">
-              Drop footage, stills, references and music
+              {assets.length ? "Add your own footage, stills, references or music" : "Optional: bring your own footage, stills, references or music"}
             </p>
             <p className="mt-1 text-[12.5px] text-faint">
               or <span className="text-fg underline decoration-line-strong underline-offset-4">browse your files</span>
-              {!assets.length && " · with nothing at all, the editor works in type alone"}
+{!assets.length && " · or leave this empty and the editor finds everything"}
             </p>
           </>
         )}
       </div>
-      {error && <p className="mt-2 text-[13px] text-red">{error}</p>}
+      {error && <p className="mt-2 text-[13px] text-brick">{error}</p>}
 
       {assets.length > 0 && (
         <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-3">
@@ -127,7 +127,7 @@ function AssetCard({ asset, index, onUpdate, onRemove }: { asset: Asset; index: 
           )}
           <button
             onClick={onRemove}
-            className="absolute top-1.5 right-1.5 bg-paper/90 p-1 text-muted opacity-0 transition-opacity group-hover:opacity-100 hover:text-red"
+            className="absolute top-1.5 right-1.5 bg-paper/90 p-1 text-muted opacity-0 transition-opacity group-hover:opacity-100 hover:text-brick"
             aria-label={`Remove ${asset.name}`}
           >
             <X className="size-3.5" strokeWidth={1.5} />
@@ -146,7 +146,7 @@ function AssetCard({ asset, index, onUpdate, onRemove }: { asset: Asset; index: 
                 aria-label={role.label}
                 className={clsx(
                   "shrink-0 border-b border-dotted font-mono text-[10px] font-medium tracking-[0.12em] uppercase transition-colors",
-                  asset.role === "reference" ? "border-accent text-accent" : asset.role === "music" ? "border-blue text-blue" : "border-line-strong text-muted hover:text-fg",
+                  asset.role === "reference" ? "border-accent text-accent" : asset.role === "music" ? "border-dusk text-dusk" : "border-line-strong text-muted hover:text-fg",
                 )}
               >
                 {role.label}
@@ -168,6 +168,17 @@ function AssetCard({ asset, index, onUpdate, onRemove }: { asset: Asset; index: 
           </Menu>
         </div>
         <div className="mt-1 truncate text-[13px]" title={asset.name}>{asset.name}</div>
+        {asset.source !== "upload" && (
+          <a
+            href={asset.source_url || undefined}
+            target="_blank"
+            rel="noreferrer"
+            title={[asset.credit && `By ${asset.credit}`, asset.license].filter(Boolean).join(" · ")}
+            className="mt-0.5 block truncate text-[11.5px] text-faint underline-offset-2 hover:text-muted hover:underline"
+          >
+            Found on {asset.source} · {asset.license}
+          </a>
+        )}
         <input
           value={note}
           onChange={(e) => { setNote(e.target.value); saveNote(e.target.value); }}

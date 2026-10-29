@@ -116,6 +116,15 @@ export function AgentPanel({
         const at = typeof e.input?.start === "number" ? ` from ${formatDuration(e.input.start as number)}` : "";
         return <>Studied <span className="font-medium text-fg">{assetName(e.input?.asset_id)}</span>{at}</>;
       }
+      if (e.name === "search_footage") {
+        const kind = e.input?.kind === "image" ? "stills" : e.input?.kind === "audio" ? "music" : "footage";
+        return <>Searched for {kind}: <span className="text-fg">“{String(e.input?.query ?? "")}”</span></>;
+      }
+      if (e.name === "import_footage") {
+        const n = Number(e.input?.count ?? 0);
+        return <>Collected {n} {n === 1 ? "piece" : "pieces"} of footage</>;
+      }
+      if (e.name === "WebSearch") return <>Researched <span className="text-fg">“{String(e.input?.query ?? "")}”</span></>;
       if (e.name === "write_script") return "Drafted the script";
       if (e.name === "set_timeline") return <>Cut the timeline{e.input?.clips ? <span className="text-faint"> · {String(e.input.clips)} shots</span> : null}</>;
       return e.label;
@@ -123,7 +132,7 @@ export function AgentPanel({
     if (e.type === "status") {
       if (e.status === "planning") return "The editor sets to work";
       if (e.status === "rendering") return "Rendering the final cut";
-      if (e.status === "done") return <span className="text-green">Finished. The piece is ready to view.</span>;
+      if (e.status === "done") return <span className="text-sage">Finished. The piece is ready to view.</span>;
       if (e.status === "cancelled") return "Set aside";
     }
     return null;
@@ -142,7 +151,7 @@ export function AgentPanel({
         ) : (
           <div>
             {latest.instruction && (
-              <div className="mb-5 border-l-2 border-fg/70 pl-3.5">
+              <div className="mb-5 border-l-2 border-accent/60 pl-3.5">
                 <div className="label mb-1">Your direction</div>
                 <p className="text-[14px] leading-relaxed">{latest.instruction}</p>
               </div>
@@ -160,7 +169,7 @@ export function AgentPanel({
                   );
                 if (e.type === "status" && e.status === "error")
                   return (
-                    <li key={e.id} className="fade-up border-l-2 border-red bg-red-soft px-3.5 py-2.5 text-[13px] leading-relaxed text-red">
+                    <li key={e.id} className="fade-up border-l-2 border-brick bg-brick-soft px-3.5 py-2.5 text-[13px] leading-relaxed text-brick">
                       {e.error || latest.error || "Something went wrong."}
                     </li>
                   );
@@ -228,7 +237,7 @@ export function AgentPanel({
       </div>
 
       <div className="shrink-0 border-t border-line p-4">
-        {error && <p className="mb-3 text-[13px] text-red">{error}</p>}
+        {error && <p className="mb-3 text-[13px] text-brick">{error}</p>}
         {active ? (
           <Button className="w-full" onClick={stop}>
             Stop the editor
@@ -287,15 +296,15 @@ export function AgentPanel({
 
 function Prelude({ hasBrief }: { hasBrief: boolean }) {
   const steps = [
-    ["Studies the materials", "Every clip and still, frame by frame"],
-    ["Drafts the script", "An opening, the movements, the words on screen"],
-    ["Cuts the timeline", "Shots, captions, motion and score"],
-    ["Renders the piece", "A finished film, ready to hang"],
+    ["Researches the subject", "Checks facts, places and names on the web"],
+    ["Finds the footage", "Searches licensed libraries and judges every shot"],
+    ["Writes and cuts", "A script, then shots, words, motion and score"],
+    ["Renders the piece", "A finished film, credited and ready to share"],
   ];
   return (
     <div>
       <p className="text-[15px] leading-relaxed text-muted">
-        {hasBrief ? "When you're ready, the editor will make the whole piece." : "Write a brief, bring your materials, and the editor will make the whole piece."}
+        {hasBrief ? "When you're ready, the editor makes the whole piece, footage included." : "Write a brief and the editor makes the whole piece, footage included. No uploads needed."}
       </p>
       <ol className="mt-6 border-t border-line">
         {steps.map(([title, sub], i) => (

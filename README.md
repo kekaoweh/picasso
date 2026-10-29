@@ -2,9 +2,10 @@
 
 Created and maintained by **Keka Oweh** ([github.com/kekaoweh](https://github.com/kekaoweh)).
 
-An AI video editor where an agent makes the whole video. You describe what you want, add footage,
-references and music, and pick a style. Claude watches the media, writes a script, cuts a timeline,
-and the backend renders an MP4. Ask for changes in plain language to get a new version.
+An AI video editor where an agent makes the whole video. You describe what you want and pick a
+style. The editor researches the subject, finds licensed footage on the web, studies it, writes a
+script, cuts a timeline and renders an MP4. Uploads are optional. Ask for changes in plain language
+to get a new version.
 
 - **Frontend:** Next.js 15 (App Router, Tailwind v4), Notion-style UI, `frontend/`
 - **Backend:** FastAPI + SQLite + ffmpeg, `backend/`
@@ -37,18 +38,44 @@ to a different account. Anthropic API keys (`sk-ant-api…`) are accepted at the
 > ([docs](https://code.claude.com/docs/en/agent-sdk/overview)). Using your own token yourself is fine.
 > For other users, get approval first, or switch them to API keys (already supported).
 
+## Footage from the web
+
+The editor sources footage itself, only from libraries whose licenses allow reuse in new videos, so
+finished work is safe to publish:
+
+| Library | What it's good for | Setup |
+| --- | --- | --- |
+| Pexels | Modern, cinematic stock video and photos | free key: `PEXELS_API_KEY` |
+| Pixabay | Stock video and photos | free key: `PIXABAY_API_KEY` |
+| Wikimedia Commons | Places, nature, history, music (CC0 / CC BY / CC BY-SA) | none |
+| NASA | Space and Earth (public domain) | none |
+| Internet Archive (Prelinger) | Vintage film (public domain) | none |
+
+Pexels and Pixabay give the most polished results. Get free keys at pexels.com/api and
+pixabay.com/api/docs, then put them in `backend/.env` (gitignored):
+
+```bash
+PEXELS_API_KEY=your-key
+PIXABAY_API_KEY=your-key
+```
+
+Every clip the editor collects keeps its library, author, license and source link. The editor shows a
+Credits list with one-click copy, and videos that use library footage end with a short credits card.
+
 ## How a video gets made
 
 ```
-brief + media + style ──▶ agent (Claude, studio tools only) ──▶ timeline JSON ──▶ ffmpeg ──▶ MP4
+brief + style ──▶ agent (Claude) ──▶ research + licensed footage ──▶ timeline JSON ──▶ ffmpeg ──▶ MP4
 ```
 
-The agent has no shell or file access. Built-in Claude Code tools are disabled, and it only gets four
-tools scoped to the project (`backend/app/agent.py`):
+The agent has no shell or file access. Of Claude Code's built-in tools only read-only WebSearch is on
+(for fact-checking). Everything else goes through tools scoped to the project (`backend/app/agent.py`):
 
 | Tool | What it does |
 | --- | --- |
 | `list_assets` | Lists the project's clips, photos and audio, with the user's notes and roles |
+| `search_footage` | Searches the footage libraries and returns a numbered contact sheet of previews |
+| `import_footage` | Downloads chosen results into the project with credit and license (time-boxed, deduplicated) |
 | `view_asset` | Returns a labelled contact sheet of frames (optionally for a time range) |
 | `write_script` | Saves the markdown script shown in the editor |
 | `set_timeline` | Validates the edit (schema, asset ids, trims within source length) and saves it |
@@ -79,8 +106,8 @@ five built-in styles, and users can create their own on the Styles page.
 
 ## Not built yet
 
-- Generating new footage with an AI video model. The agent currently edits only what you upload;
-  `set_timeline` / `render_timeline` are the place to add a "generate shot" clip type.
+- Generating new shots with an AI video model, for moments no library has. A "generate shot" clip type
+  would slot into `set_timeline` / `render_timeline`.
 - Voiceover / TTS and auto-captions from speech.
 - A background job queue. Runs are asyncio tasks in the API process, so use a single worker, or add
   Redis/Celery to scale out.

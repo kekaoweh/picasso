@@ -40,9 +40,9 @@ export default function StylesPage() {
   const own = styles.filter((s) => !s.builtin);
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="studio-glow h-full overflow-y-auto">
       <div className="mx-auto max-w-[1040px] px-6 pt-12 pb-28 sm:px-12 sm:pt-16">
-        <div className="flex items-baseline justify-between border-b border-fg/80 pb-2.5">
+        <div className="flex items-baseline justify-between border-b border-line-strong pb-2.5">
           <span className="label !text-muted">Styles</span>
           <span className="label">{styles.length} in the studio</span>
         </div>
@@ -125,7 +125,7 @@ function Gallery({
               <div className="mt-2.5 flex gap-4 text-[12px] text-faint">
                 <button className="underline-offset-4 hover:text-fg hover:underline" onClick={() => onDuplicate(s)}>Make a variation</button>
                 {onEdit && <button className="underline-offset-4 hover:text-fg hover:underline" onClick={() => onEdit(s)}>Edit</button>}
-                {onRemove && <button className="underline-offset-4 hover:text-red hover:underline" onClick={() => onRemove(s)}>Remove</button>}
+                {onRemove && <button className="underline-offset-4 hover:text-brick hover:underline" onClick={() => onRemove(s)}>Remove</button>}
               </div>
             </div>
           </div>
@@ -258,7 +258,7 @@ function StyleEditor({
             </div>
           </Field>
 
-          {error && <p className="text-[13px] text-red">{error}</p>}
+          {error && <p className="text-[13px] text-brick">{error}</p>}
         </div>
 
         <div className="flex justify-end gap-2 border-t border-line px-6 py-3.5">

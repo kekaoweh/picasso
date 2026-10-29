@@ -17,7 +17,7 @@ export function StatusPill({ status, solid }: { status: RunStatus; solid?: boole
     <span
       className={clsx(
         "inline-flex items-center gap-1.5 font-mono text-[10px] font-medium tracking-[0.14em] whitespace-nowrap uppercase",
-        status === "done" ? "text-green" : status === "error" ? "text-red" : active ? "text-accent" : "text-faint",
+        status === "done" ? "text-sage" : status === "error" ? "text-brick" : active ? "text-accent" : "text-faint",
         solid && "rounded-[2px] bg-paper/95 px-1.5 py-1 shadow-card",
       )}
     >

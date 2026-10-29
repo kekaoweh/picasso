@@ -1,55 +1,58 @@
 @import "tailwindcss";
 
-/* Picasso — a quiet studio. Gesso canvas, charcoal ink, graphite, one dusty sienna. */
+/* Picasso: a warm studio. Gesso canvas, espresso ink, and one family of earth tones
+   (clay, sage, dusk, brick) kept at the same low saturation so nothing shouts. */
 :root {
-  --bg: #f2efe8;
-  --bg-soft: #ebe7de;
-  --paper: #faf8f3;
-  --bg-hover: rgba(35, 33, 29, 0.045);
-  --bg-active: rgba(35, 33, 29, 0.075);
-  --fg: #23211d;
-  --fg-muted: #5f5b52;
-  --fg-faint: #918b7f;
-  --border: #dcd6c9;
-  --border-strong: #c6bead;
-  --accent: #8c5a45;
-  --accent-soft: rgba(140, 90, 69, 0.1);
-  --blue: #4f5e6c;
-  --blue-soft: rgba(79, 94, 108, 0.1);
-  --green: #5d6a51;
-  --green-soft: rgba(93, 106, 81, 0.12);
-  --red: #8e3f38;
-  --red-soft: rgba(142, 63, 56, 0.09);
-  --film: #1c1a17;
-  --shadow: 0 1px 0 rgba(35, 33, 29, 0.04), 0 12px 32px -18px rgba(35, 33, 29, 0.25);
-  --shadow-pop: 0 0 0 1px var(--border), 0 18px 40px -16px rgba(35, 33, 29, 0.28);
-  --grain-opacity: 0.05;
+  --bg: #f3f0ea;
+  --bg-soft: #eeeae2;
+  --paper: #faf8f4;
+  --bg-hover: rgba(58, 48, 38, 0.045);
+  --bg-active: rgba(58, 48, 38, 0.075);
+  --fg: #2b2622;
+  --fg-muted: #635b52;
+  --fg-faint: #978e82;
+  --border: #e2dcd1;
+  --border-strong: #cfc6b7;
+  --accent: #a2654c;
+  --accent-soft: rgba(162, 101, 76, 0.11);
+  --dusk: #6f6670;
+  --dusk-soft: rgba(111, 102, 112, 0.11);
+  --sage: #6c7759;
+  --sage-soft: rgba(108, 119, 89, 0.12);
+  --brick: #9b4c3e;
+  --brick-soft: rgba(155, 76, 62, 0.09);
+  --film: #241f1b;
+  --shadow: 0 1px 0 rgba(58, 48, 38, 0.035), 0 14px 34px -20px rgba(58, 48, 38, 0.28);
+  --shadow-pop: 0 0 0 1px var(--border), 0 20px 44px -18px rgba(58, 48, 38, 0.3);
+  --glow: radial-gradient(60% 55% at 50% 0%, rgba(162, 101, 76, 0.09), transparent 70%);
+  --grain-opacity: 0.045;
   --grain-blend: multiply;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #181715;
-    --bg-soft: #1d1c19;
-    --paper: #221f1c;
-    --bg-hover: rgba(232, 227, 215, 0.05);
-    --bg-active: rgba(232, 227, 215, 0.085);
-    --fg: #e8e3d7;
-    --fg-muted: #a59f92;
-    --fg-faint: #716b61;
-    --border: #2f2c28;
-    --border-strong: #3e3a34;
-    --accent: #b98468;
-    --accent-soft: rgba(185, 132, 104, 0.13);
-    --blue: #8d9cab;
-    --blue-soft: rgba(141, 156, 171, 0.13);
-    --green: #93a085;
-    --green-soft: rgba(147, 160, 133, 0.13);
-    --red: #c4786d;
-    --red-soft: rgba(196, 120, 109, 0.13);
-    --film: #0f0e0d;
-    --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 32px -18px rgba(0, 0, 0, 0.7);
-    --shadow-pop: 0 0 0 1px var(--border), 0 18px 40px -16px rgba(0, 0, 0, 0.8);
+    --bg: #1b1916;
+    --bg-soft: #201d1a;
+    --paper: #252220;
+    --bg-hover: rgba(236, 230, 218, 0.05);
+    --bg-active: rgba(236, 230, 218, 0.085);
+    --fg: #ece6da;
+    --fg-muted: #aaa294;
+    --fg-faint: #776f64;
+    --border: #33302b;
+    --border-strong: #433e37;
+    --accent: #c48c70;
+    --accent-soft: rgba(196, 140, 112, 0.14);
+    --dusk: #aa9fab;
+    --dusk-soft: rgba(170, 159, 171, 0.13);
+    --sage: #a0ab8c;
+    --sage-soft: rgba(160, 171, 140, 0.13);
+    --brick: #cd8676;
+    --brick-soft: rgba(205, 134, 118, 0.13);
+    --film: #12100e;
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 14px 34px -20px rgba(0, 0, 0, 0.7);
+    --shadow-pop: 0 0 0 1px var(--border), 0 20px 44px -18px rgba(0, 0, 0, 0.8);
+    --glow: radial-gradient(60% 55% at 50% 0%, rgba(196, 140, 112, 0.08), transparent 70%);
     --grain-opacity: 0.035;
     --grain-blend: screen;
   }
@@ -68,12 +71,12 @@
   --color-line-strong: var(--border-strong);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
-  --color-blue: var(--blue);
-  --color-blue-soft: var(--blue-soft);
-  --color-green: var(--green);
-  --color-green-soft: var(--green-soft);
-  --color-red: var(--red);
-  --color-red-soft: var(--red-soft);
+  --color-dusk: var(--dusk);
+  --color-dusk-soft: var(--dusk-soft);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-brick: var(--brick);
+  --color-brick-soft: var(--brick-soft);
   --color-film: var(--film);
   --shadow-card: var(--shadow);
   --shadow-pop: var(--shadow-pop);
@@ -170,8 +173,8 @@ textarea {
 .film-strip {
   background-color: var(--film);
   background-image:
-    linear-gradient(90deg, rgba(242, 239, 232, 0.55) 0 7px, transparent 7px 14px),
-    linear-gradient(90deg, rgba(242, 239, 232, 0.55) 0 7px, transparent 7px 14px);
+    linear-gradient(90deg, rgba(243, 236, 224, 0.42) 0 7px, transparent 7px 14px),
+    linear-gradient(90deg, rgba(243, 236, 224, 0.42) 0 7px, transparent 7px 14px);
   background-size: 14px 5px, 14px 5px;
   background-position: 3px 5px, 3px calc(100% - 5px);
   background-repeat: repeat-x;
@@ -201,4 +204,12 @@ textarea {
 @media (prefers-reduced-motion: reduce) {
   .draw-line, .fade-up, .ink-pulse { animation: none; }
   .gallery-img { transition: none; }
+}
+
+/* A soft clay glow at the top of the main pages, warmth without color noise. */
+.studio-glow {
+  background-image: var(--glow);
+  background-repeat: no-repeat;
+  background-size: 100% 560px;
+  background-attachment: local;
 }

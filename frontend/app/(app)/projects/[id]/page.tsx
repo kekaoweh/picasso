@@ -13,7 +13,7 @@ import { AspectPicker, LengthPicker, StylePicker } from "@/components/pickers";
 import { StatusPill } from "@/components/status";
 import { TimelineStrip } from "@/components/timeline-strip";
 import { Button, Menu, MenuItem, plate, roman, SectionTitle, Spinner, useMediaQuery } from "@/components/ui";
-import { api, Aspect, formatDuration, media, Project, Run, timeAgo } from "@/lib/api";
+import { api, Aspect, FootageSource, formatDuration, media, Project, Run, timeAgo } from "@/lib/api";
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
@@ -108,6 +108,7 @@ export default function ProjectPage() {
   const selectedRun = runs.find((r) => r.id === selectedRunId && r.has_video);
   const selectedIndex = selectedRun ? runs.length - runs.indexOf(selectedRun) : 0;
   const portrait = project.aspect === "9:16" || project.aspect === "4:5";
+  const credits = creditsFor(project);
   const begun = new Date(project.created_at).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
   const panel = (
     <AgentPanel
@@ -260,13 +261,31 @@ export default function ProjectPage() {
             )}
 
             <section className="mt-12">
-              <SectionTitle n={(selectedRun ? 3 : 2) + (project.timeline || project.script ? 1 : 0)}>Materials</SectionTitle>
-              <p className="-mt-1 mb-5 text-[13.5px] leading-relaxed text-muted">
-                Tag a piece as <span className="font-mono text-[10.5px] tracking-[0.12em] text-accent">REFERENCE</span> to show the editor a look or pace to match,
-                and sound as <span className="font-mono text-[10.5px] tracking-[0.12em] text-blue">SCORE</span> for the soundtrack.
+              <SectionTitle n={(selectedRun ? 3 : 2) + (project.timeline || project.script ? 1 : 0)}>Footage</SectionTitle>
+              <p className="-mt-1 mb-2 text-[13.5px] leading-relaxed text-muted">
+                The editor finds footage on its own in licensed libraries, so everything it uses is cleared for
+                publishing. Add your own clips only if you want them in the cut. Tag a piece as{" "}
+                <span className="font-mono text-[10.5px] tracking-[0.12em] text-accent">REFERENCE</span> to show a look or pace to match.
               </p>
+              <SourceLine />
               <AssetGrid projectId={project.id} assets={project.assets} onChange={(assets) => setProject({ ...project, assets })} />
             </section>
+
+            {credits.length > 0 && (
+              <section className="mt-12">
+                <SectionTitle n={(selectedRun ? 4 : 3) + (project.timeline || project.script ? 1 : 0)} action={<CopyCredits credits={credits} />}>
+                  Credits
+                </SectionTitle>
+                <ul className="space-y-1.5 text-[13px] leading-relaxed text-muted">
+                  {credits.map((a) => (
+                    <li key={a.id}>
+                      <a href={a.source_url || undefined} target="_blank" rel="noreferrer" className="text-fg underline-offset-2 hover:underline">{a.name}</a>
+                      {a.credit && <> by {a.credit}</>} · {a.source} · <span className="text-faint">{a.license}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </div>
         </div>
 
@@ -276,5 +295,63 @@ export default function ProjectPage() {
 
       {isDesktop && panelOpen && <div className="w-[384px] shrink-0 border-l border-line">{panel}</div>}
     </div>
+  );
+}
+
+/** Which footage libraries the editor can search; libraries that need a key say so. */
+function SourceLine() {
+  const [list, setList] = useState<FootageSource[] | null>(null);
+  useEffect(() => {
+    api.sources().then(setList).catch(() => setList([]));
+  }, []);
+  if (!list?.length) return <div className="mb-5" />;
+  return (
+    <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-1">
+      <span className="label">Libraries</span>
+      {list.map((s) => (
+        <span
+          key={s.name}
+          title={s.enabled ? `Searching ${s.name}` : `Add ${s.needs_key} to backend/.env to search ${s.name}`}
+          className={clsx("inline-flex items-center gap-1.5 text-[12.5px]", s.enabled ? "text-muted" : "text-faint line-through decoration-line-strong")}
+        >
+          <span className={clsx("size-[5px] rounded-full", s.enabled ? "bg-sage" : "bg-line-strong")} />
+          {s.name}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Library footage that needs crediting: the clips (and music) the current cut actually uses,
+ * one line per source. Before there is a cut, every collected piece is listed.
+ */
+function creditsFor(project: Project) {
+  const used = project.timeline
+    ? new Set([...project.timeline.clips.map((c) => c.asset_id), project.timeline.music?.asset_id])
+    : null;
+  const seen = new Set<string>();
+  return project.assets.filter((a) => {
+    if (a.source === "upload" || (used && !used.has(a.id))) return false;
+    const key = a.source_url || a.id;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function CopyCredits({ credits }: { credits: Project["assets"] }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    const lines = credits
+      .map((a) => `${a.name}${a.credit ? ` by ${a.credit}` : ""}, ${a.source}, ${a.license}${a.source_url ? ` (${a.source_url})` : ""}`);
+    await navigator.clipboard.writeText(["Footage credits", ...lines].join("\n"));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <button onClick={copy} className="font-mono text-[10.5px] tracking-[0.14em] text-faint uppercase hover:text-fg">
+      {copied ? "Copied" : "Copy credits"}
+    </button>
   );
 }
