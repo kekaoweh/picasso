@@ -94,7 +94,7 @@ export default function ProjectPage() {
   if (notFound)
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 text-sm text-muted">
-        <span className="font-display text-[22px] italic">This work isn&apos;t in the collection.</span>
+        <span className="text-[18px] font-medium">This work isn&apos;t in the collection.</span>
         <Link href="/" className="text-fg underline underline-offset-4">Back to the studio</Link>
       </div>
     );
@@ -175,7 +175,7 @@ export default function ProjectPage() {
               rows={1}
               placeholder="Untitled"
               aria-label="Title"
-              className="mt-3 block w-full resize-none bg-transparent font-display text-[40px] leading-[1.05] tracking-tight outline-none placeholder:text-faint placeholder:italic sm:text-[52px]"
+              className="mt-3 block w-full resize-none bg-transparent text-[34px] leading-[1.08] font-semibold tracking-[-0.035em] outline-none placeholder:text-faint sm:text-[44px]"
             />
 
             {/* Spec band */}
@@ -213,7 +213,7 @@ export default function ProjectPage() {
                     />
                   </div>
                   <figcaption className="mt-3 flex items-baseline justify-between gap-4">
-                    <span className="font-display text-[17px] italic">{project.name || "Untitled"}, state {roman(selectedIndex)}.</span>
+                    <span className="text-[14.5px] font-medium">{project.name || "Untitled"}, state {roman(selectedIndex)}.</span>
                     <span className="label">{formatDuration(selectedRun.duration)} · {project.aspect} · {timeAgo(selectedRun.created_at)}</span>
                   </figcaption>
                 </figure>
@@ -247,14 +247,14 @@ export default function ProjectPage() {
                   project.timeline ? (
                     <TimelineStrip timeline={project.timeline} assets={project.assets} />
                   ) : (
-                    <p className="font-display text-[16px] text-faint italic">No cut yet.</p>
+                    <p className="text-[14px] text-faint">No cut yet.</p>
                   )
                 ) : project.script ? (
                   <div className="prose-doc text-[15.5px]">
                     <ReactMarkdown>{project.script}</ReactMarkdown>
                   </div>
                 ) : (
-                  <p className="font-display text-[16px] text-faint italic">No script yet.</p>
+                  <p className="text-[14px] text-faint">No script yet.</p>
                 )}
               </section>
             )}

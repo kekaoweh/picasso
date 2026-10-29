@@ -70,7 +70,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-3">
         {projects.length === 0 && (
-          <p className="px-2 py-1 font-display text-[15px] text-faint italic">Nothing on the walls yet.</p>
+          <p className="px-2 py-1 text-[13px] text-faint">Nothing on the walls yet.</p>
         )}
         {projects.map((p) => {
           const active = pathname === `/projects/${p.id}`;
@@ -107,7 +107,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
           width="w-60"
           trigger={({ toggle }) => (
             <button onClick={toggle} className="flex w-full items-center gap-2.5 rounded-[2px] px-2 py-1.5 text-left hover:bg-hover">
-              <span className="flex size-7 shrink-0 items-center justify-center border border-line-strong font-display text-[15px] text-fg italic">
+              <span className="flex size-7 shrink-0 items-center justify-center border border-line-strong text-[13px] font-semibold text-fg">
                 {user.name.slice(0, 1).toUpperCase()}
               </span>
               <span className="min-w-0">
@@ -149,7 +149,7 @@ function NavLink({ href, active, children, onClick }: { href: string; active: bo
       href={href}
       onClick={onClick}
       className={clsx(
-        "relative flex items-center rounded-[2px] py-1.5 pl-3 font-display text-[19px] leading-tight transition-colors",
+        "relative flex items-center rounded-[2px] py-1.5 pl-3 text-[14px] font-medium transition-colors",
         active ? "text-fg" : "text-muted hover:text-fg",
       )}
     >

@@ -32,7 +32,7 @@ export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={clsx("inline-flex items-center gap-2.5", className)}>
       <Logo className="size-7" />
-      <span className="font-display text-[24px] leading-none tracking-tight italic">Picasso</span>
+      <span className="text-[19px] leading-none font-semibold tracking-[-0.035em]">Picasso</span>
     </span>
   );
 }

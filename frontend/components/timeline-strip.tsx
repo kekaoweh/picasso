@@ -56,7 +56,7 @@ export function TimelineStrip({ timeline, assets }: { timeline: Timeline; assets
                       <span
                         className={clsx(
                           "absolute inset-x-0 line-clamp-2 px-1 text-center text-[8.5px] leading-tight font-medium text-white [text-shadow:0_1px_2px_rgba(0,0,0,.85)]",
-                          c.kind === "title_card" ? "top-1/2 -translate-y-1/2 font-display text-[11px] italic" : "bottom-1",
+                          c.kind === "title_card" ? "top-1/2 -translate-y-1/2 text-[10px] font-semibold" : "bottom-1",
                         )}
                       >
                         {c.text.text}
@@ -87,11 +87,11 @@ export function TimelineStrip({ timeline, assets }: { timeline: Timeline; assets
               {clip.kind === "asset" && clipAsset?.kind === "video" ? ` from ${clip.source_start.toFixed(1)}s` : ""}
               {clip.motion !== "none" ? ` · ${clip.motion.replace("_", " ")}` : ""}
             </div>
-            {clip.text?.text && <div className="mt-1 font-display text-[18px] leading-snug">“{clip.text.text}”</div>}
+            {clip.text?.text && <div className="mt-1 text-[15px] font-medium leading-snug">“{clip.text.text}”</div>}
             {clip.note && <div className="mt-0.5 text-[13px] leading-relaxed text-muted">{clip.note}</div>}
           </div>
         ) : (
-          <p className="font-display text-[16px] text-faint italic">
+          <p className="text-[13.5px] text-faint">
             {timeline.clips.length} shots, {formatDuration(total)}. Hover a frame to read the editor&apos;s note on it.
           </p>
         )}

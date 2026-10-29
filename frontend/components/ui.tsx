@@ -158,7 +158,7 @@ export const roman = (n: number) => ROMAN[n - 1] ?? String(n);
 export function SectionTitle({ n, children, action }: { n?: number; children: ReactNode; action?: ReactNode }) {
   return (
     <div className="mb-4 flex items-baseline gap-3 border-b border-line pb-2">
-      {n !== undefined && <span className="font-display text-[17px] leading-none text-faint">{roman(n)}.</span>}
+      {n !== undefined && <span className="font-mono text-[11px] leading-none text-faint">{roman(n)}.</span>}
       <h2 className="label !text-muted">{children}</h2>
       {action && <div className="ml-auto">{action}</div>}
     </div>

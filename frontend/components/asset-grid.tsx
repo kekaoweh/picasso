@@ -82,7 +82,7 @@ export function AssetGrid({
           </div>
         ) : (
           <>
-            <p className="font-display text-[19px] text-muted italic">
+            <p className="text-[15px] font-medium text-muted">
               Drop footage, stills, references and music
             </p>
             <p className="mt-1 text-[12.5px] text-faint">
@@ -172,7 +172,7 @@ function AssetCard({ asset, index, onUpdate, onRemove }: { asset: Asset; index: 
           value={note}
           onChange={(e) => { setNote(e.target.value); saveNote(e.target.value); }}
           placeholder="A note for the editor…"
-          className="mt-1 h-6 w-full border-b border-transparent bg-transparent font-display text-[14px] text-muted italic outline-none placeholder:text-faint hover:border-line focus:border-line-strong"
+          className="mt-1 h-6 w-full border-b border-transparent bg-transparent text-[13px] text-muted outline-none placeholder:text-faint hover:border-line focus:border-line-strong"
         />
       </div>
     </div>

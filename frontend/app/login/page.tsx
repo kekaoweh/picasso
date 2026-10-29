@@ -54,13 +54,13 @@ export default function LoginPage() {
           <figcaption className="mt-5 flex items-baseline justify-between gap-6 border-t border-line pt-3">
             <span className="label">Plate I</span>
             <span className="text-right">
-              <span className="block font-display text-[17px] italic">Study for a moving picture</span>
+              <span className="block text-[14px] font-medium">Study for a moving picture</span>
               <span className="block text-[12px] text-faint">Charcoal and sienna on gesso, 2026</span>
             </span>
           </figcaption>
         </figure>
         <blockquote className="max-w-[420px]">
-          <p className="font-display text-[26px] leading-[1.2] text-muted italic">
+          <p className="text-[21px] leading-[1.35] font-medium tracking-[-0.015em] text-muted">
             “I begin with an idea, and then it becomes something else.”
           </p>
           <footer className="label mt-3">Pablo Picasso</footer>
@@ -74,9 +74,9 @@ export default function LoginPage() {
             <Wordmark />
           </div>
           <p className="label">A studio for moving pictures</p>
-          <h1 className="mt-3 font-display text-[46px] leading-[1.02] tracking-tight">
+          <h1 className="mt-3 text-[40px] leading-[1.04] font-semibold tracking-[-0.04em]">
             Describe the film.<br />
-            <span className="text-muted italic">We&apos;ll make it.</span>
+            <span className="text-muted">We&apos;ll make it.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">
             Bring footage, stills and references. Picasso studies them, writes the piece and cuts it, frame by frame.
@@ -159,8 +159,8 @@ export default function LoginPage() {
 
 function Step({ n, title, optional, children }: { n: string; title: string; optional?: boolean; children: React.ReactNode }) {
   return (
-    <li className="grid grid-cols-[28px_1fr] gap-x-2">
-      <span className="font-display text-[17px] leading-[22px] text-faint italic">{n}.</span>
+    <li className="grid grid-cols-[34px_1fr] gap-x-2">
+      <span className="font-mono text-[11px] leading-[22px] text-faint">{n}.</span>
       <div>
         <div className="text-[14px] leading-[22px] font-medium">
           {title}

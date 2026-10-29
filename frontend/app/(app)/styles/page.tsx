@@ -48,8 +48,8 @@ export default function StylesPage() {
         </div>
         <div className="mt-10 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-[620px]">
-            <h1 className="font-display text-[44px] leading-[1.02] tracking-tight sm:text-[60px]">
-              A way of <span className="italic text-muted">seeing</span>
+            <h1 className="text-[40px] leading-[1.04] font-semibold tracking-[-0.04em] sm:text-[54px]">
+              A way of <span className="text-accent">seeing</span>
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
               Each style tells the editor how to cut (pacing, tone, how words are used) and tells the
@@ -109,7 +109,7 @@ function Gallery({
 }) {
   return (
     <section className="mt-16">
-      <h2 className="mb-8 border-b border-line pb-2.5 font-display text-[28px] leading-none">{title}</h2>
+      <h2 className="mb-8 border-b border-line pb-2.5 text-[22px] leading-none font-semibold tracking-[-0.025em]">{title}</h2>
       <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
         {styles.map((s, i) => (
           <div key={s.id} className="group">
@@ -120,7 +120,7 @@ function Gallery({
               <div className="flex items-baseline justify-between">
                 <span className="label">{roman(i + 1)} · ~{s.pacing_seconds}s shots · {s.transition === "fade" ? "fades" : "hard cuts"}</span>
               </div>
-              <div className="mt-1 font-display text-[22px] leading-tight">{s.name}</div>
+              <div className="mt-1 text-[16.5px] leading-snug font-semibold tracking-[-0.015em]">{s.name}</div>
               <p className="mt-1 line-clamp-3 text-[13px] leading-relaxed text-muted">{s.description}</p>
               <div className="mt-2.5 flex gap-4 text-[12px] text-faint">
                 <button className="underline-offset-4 hover:text-fg hover:underline" onClick={() => onDuplicate(s)}>Make a variation</button>
@@ -210,7 +210,7 @@ function StyleEditor({
             onChange={(e) => set("name", e.target.value)}
             placeholder="Name the style"
             autoFocus
-            className="h-12 w-full border-b border-line-strong bg-transparent font-display text-[28px] outline-none placeholder:text-faint placeholder:italic focus:border-fg"
+            className="h-12 w-full border-b border-line-strong bg-transparent text-[24px] font-semibold tracking-[-0.025em] outline-none placeholder:text-faint placeholder:font-normal focus:border-fg"
           />
 
           <Field label="Direction for the editor" hint="Pacing, tone, how words are used, what to avoid. The editor reads this before every cut.">

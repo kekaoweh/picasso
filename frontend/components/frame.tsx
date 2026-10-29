@@ -19,7 +19,7 @@ export function BlankCanvas({ label }: { label?: string }) {
         <path d="M0 60L58 0" className="stroke-line-strong" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
       </svg>
       {label && (
-        <span className="absolute inset-0 flex items-center justify-center font-display text-[17px] text-faint italic">{label}</span>
+        <span className="absolute inset-0 flex items-center justify-center text-[13px] text-faint">{label}</span>
       )}
     </div>
   );

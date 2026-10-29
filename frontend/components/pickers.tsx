@@ -127,7 +127,7 @@ export function StylePicker({
       width="w-80"
       trigger={({ open, toggle }) => (
         <Field label={label} open={open} toggle={toggle}>
-          <span className="font-display text-[16px] italic">{current?.name ?? "Choose a style"}</span>
+          <span className="text-[14px] font-medium">{current?.name ?? "Choose a style"}</span>
         </Field>
       )}
     >
@@ -140,7 +140,7 @@ export function StylePicker({
               className={clsx("block w-full rounded-[2px] px-2.5 py-2 text-left hover:bg-hover", s.id === value && "bg-hover")}
             >
               <span className="flex items-baseline justify-between gap-3">
-                <span className="font-display text-[17px] italic">{s.name}</span>
+                <span className="text-[14px] font-semibold">{s.name}</span>
                 <span className="font-mono text-[10px] tracking-wider text-faint">~{s.pacing_seconds}s</span>
               </span>
               <span className="mt-0.5 line-clamp-2 block text-[12px] leading-snug text-muted">{s.description}</span>

@@ -52,13 +52,13 @@ export default function StudioPage() {
           <span className="label hidden sm:inline">{today}</span>
         </div>
 
-        <h1 className="mt-10 max-w-[760px] font-display text-[44px] leading-[1.02] tracking-tight sm:text-[64px]">
-          What shall we <span className="italic text-muted">make</span> today?
+        <h1 className="mt-10 max-w-[760px] text-[40px] leading-[1.04] font-semibold tracking-[-0.04em] sm:text-[58px]">
+          What shall we <span className="text-accent">make</span> today?
         </h1>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_280px]">
           {/* Commission sheet */}
-          <div className="border border-line-strong bg-paper shadow-card transition-shadow focus-within:shadow-pop">
+          <div className="self-start border border-line-strong bg-paper shadow-card transition-shadow focus-within:shadow-pop">
             <div className="flex items-baseline justify-between border-b border-line px-5 py-2.5">
               <span className="label">New commission</span>
               <span className="label">{plate(projects.length + 1)}</span>
@@ -89,11 +89,11 @@ export default function StudioPage() {
             <div className="label mb-3 border-b border-line pb-2">From the sketchbook</div>
             <ol className="space-y-3">
               {SKETCHES.map((s, i) => (
-                <li key={s} className="grid grid-cols-[26px_1fr]">
-                  <span className="font-display text-[14px] leading-[22px] text-faint italic">{roman(i + 1)}.</span>
+                <li key={s} className="grid grid-cols-[34px_1fr]">
+                  <span className="font-mono text-[11px] leading-[22px] text-faint">{roman(i + 1)}.</span>
                   <button
                     onClick={() => setPrompt(s)}
-                    className="text-left font-display text-[17px] leading-[22px] text-muted decoration-line-strong underline-offset-4 transition-colors hover:text-fg hover:underline"
+                    className="text-left text-[14.5px] leading-[22px] text-muted decoration-line-strong underline-offset-4 transition-colors hover:text-fg hover:underline"
                   >
                     {s}
                   </button>
@@ -106,12 +106,12 @@ export default function StudioPage() {
         {/* The collection */}
         <section className="mt-24">
           <div className="mb-8 flex items-baseline justify-between border-b border-line pb-2.5">
-            <h2 className="font-display text-[30px] leading-none">The collection</h2>
+            <h2 className="text-[24px] leading-none font-semibold tracking-[-0.025em]">The collection</h2>
             <span className="label">{projects.length} {projects.length === 1 ? "work" : "works"}</span>
           </div>
           {projects.length === 0 ? (
             <div className="grid place-items-center py-16 text-center">
-              <p className="font-display text-[22px] text-muted italic">The walls are bare.</p>
+              <p className="text-[18px] font-medium tracking-[-0.01em] text-muted">The walls are bare.</p>
               <p className="mt-1 text-[13px] text-faint">Begin a commission above and it will hang here.</p>
             </div>
           ) : (
@@ -134,7 +134,7 @@ export default function StudioPage() {
                   {/* Placard */}
                   <div className="mt-3.5 pl-0.5">
                     <div className="label">{plate(plateOf(p.id))}</div>
-                    <div className="mt-1 font-display text-[21px] leading-tight decoration-line-strong underline-offset-4 group-hover:underline">
+                    <div className="mt-1 text-[16.5px] leading-snug font-semibold tracking-[-0.015em] decoration-line-strong underline-offset-4 group-hover:underline">
                       {p.name || "Untitled"}
                     </div>
                     <div className="mt-1 text-[12.5px] text-faint">

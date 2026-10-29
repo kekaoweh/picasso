@@ -114,7 +114,7 @@ export function AgentPanel({
       if (e.name === "list_assets") return "Surveyed the materials";
       if (e.name === "view_asset") {
         const at = typeof e.input?.start === "number" ? ` from ${formatDuration(e.input.start as number)}` : "";
-        return <>Studied <em className="font-display text-[15px]">{assetName(e.input?.asset_id)}</em>{at}</>;
+        return <>Studied <span className="font-medium text-fg">{assetName(e.input?.asset_id)}</span>{at}</>;
       }
       if (e.name === "write_script") return "Drafted the script";
       if (e.name === "set_timeline") return <>Cut the timeline{e.input?.clips ? <span className="text-faint"> · {String(e.input.clips)} shots</span> : null}</>;
@@ -188,7 +188,7 @@ export function AgentPanel({
                     </div>
                   </div>
                 ) : (
-                  <span className="font-display text-[15px] text-muted italic">
+                  <span className="text-[13.5px] text-muted">
                     {status === "queued" ? "Preparing the studio…" : status === "rendering" ? "Rendering…" : "At work…"}
                   </span>
                 )}
@@ -215,7 +215,7 @@ export function AgentPanel({
                         !r.has_video && "cursor-default",
                       )}
                     >
-                      <span className={clsx("font-display text-[15px]", r.id === selectedRunId ? "text-accent" : "text-faint")}>{roman(n)}.</span>
+                      <span className={clsx("font-mono text-[11px]", r.id === selectedRunId ? "text-accent" : "text-faint")}>{roman(n)}.</span>
                       <span className="truncate text-[13px]">{r.instruction || (r.mode === "render" ? "Re-rendered" : "First cut")}</span>
                       {r.has_video ? <span className="font-mono text-[10px] text-faint">{timeAgo(r.created_at)}</span> : <StatusPill status={r.status} />}
                     </button>
@@ -294,13 +294,13 @@ function Prelude({ hasBrief }: { hasBrief: boolean }) {
   ];
   return (
     <div>
-      <p className="font-display text-[19px] leading-snug text-muted italic">
+      <p className="text-[15px] leading-relaxed text-muted">
         {hasBrief ? "When you're ready, the editor will make the whole piece." : "Write a brief, bring your materials, and the editor will make the whole piece."}
       </p>
       <ol className="mt-6 border-t border-line">
         {steps.map(([title, sub], i) => (
           <li key={title} className="grid grid-cols-[34px_1fr] border-b border-line py-3">
-            <span className="font-display text-[15px] text-faint">{roman(i + 1)}.</span>
+            <span className="font-mono text-[11px] text-faint">{roman(i + 1)}.</span>
             <span>
               <span className="block text-[13.5px] font-medium">{title}</span>
               <span className="block text-[12.5px] text-faint">{sub}</span>
