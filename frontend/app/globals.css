@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+/* Picasso — a quiet studio. Gesso canvas, charcoal ink, graphite, one dusty sienna. */
+:root {
+  --bg: #f2efe8;
+  --bg-soft: #ebe7de;
+  --paper: #faf8f3;
+  --bg-hover: rgba(35, 33, 29, 0.045);
+  --bg-active: rgba(35, 33, 29, 0.075);
+  --fg: #23211d;
+  --fg-muted: #5f5b52;
+  --fg-faint: #918b7f;
+  --border: #dcd6c9;
+  --border-strong: #c6bead;
+  --accent: #8c5a45;
+  --accent-soft: rgba(140, 90, 69, 0.1);
+  --blue: #4f5e6c;
+  --blue-soft: rgba(79, 94, 108, 0.1);
+  --green: #5d6a51;
+  --green-soft: rgba(93, 106, 81, 0.12);
+  --red: #8e3f38;
+  --red-soft: rgba(142, 63, 56, 0.09);
+  --film: #1c1a17;
+  --shadow: 0 1px 0 rgba(35, 33, 29, 0.04), 0 12px 32px -18px rgba(35, 33, 29, 0.25);
+  --shadow-pop: 0 0 0 1px var(--border), 0 18px 40px -16px rgba(35, 33, 29, 0.28);
+  --grain-opacity: 0.05;
+  --grain-blend: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #181715;
+    --bg-soft: #1d1c19;
+    --paper: #221f1c;
+    --bg-hover: rgba(232, 227, 215, 0.05);
+    --bg-active: rgba(232, 227, 215, 0.085);
+    --fg: #e8e3d7;
+    --fg-muted: #a59f92;
+    --fg-faint: #716b61;
+    --border: #2f2c28;
+    --border-strong: #3e3a34;
+    --accent: #b98468;
+    --accent-soft: rgba(185, 132, 104, 0.13);
+    --blue: #8d9cab;
+    --blue-soft: rgba(141, 156, 171, 0.13);
+    --green: #93a085;
+    --green-soft: rgba(147, 160, 133, 0.13);
+    --red: #c4786d;
+    --red-soft: rgba(196, 120, 109, 0.13);
+    --film: #0f0e0d;
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 32px -18px rgba(0, 0, 0, 0.7);
+    --shadow-pop: 0 0 0 1px var(--border), 0 18px 40px -16px rgba(0, 0, 0, 0.8);
+    --grain-opacity: 0.035;
+    --grain-blend: screen;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-soft: var(--bg-soft);
+  --color-paper: var(--paper);
+  --color-hover: var(--bg-hover);
+  --color-active: var(--bg-active);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-faint: var(--fg-faint);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-blue: var(--blue);
+  --color-blue-soft: var(--blue-soft);
+  --color-green: var(--green);
+  --color-green-soft: var(--green-soft);
+  --color-red: var(--red);
+  --color-red-soft: var(--red-soft);
+  --color-film: var(--film);
+  --shadow-card: var(--shadow);
+  --shadow-pop: var(--shadow-pop);
+  --font-sans: var(--font-inter-tight), ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-instrument), "Iowan Old Style", Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper grain over the whole studio; pointer-events none so it never gets in the way. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+textarea {
+  field-sizing: content;
+}
+
+/* Small-caps museum label used for metadata throughout. */
+.label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+/* Muted thumbnails that come to life on hover, like works under gallery light. */
+.gallery-img {
+  filter: grayscale(0.82) sepia(0.14) contrast(0.94) brightness(1.02);
+  transition: filter 0.5s ease, transform 0.7s ease;
+}
+.group:hover .gallery-img,
+.gallery-img:hover {
+  filter: none;
+}
+
+.prose-doc h1,
+.prose-doc h2,
+.prose-doc h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  margin: 1.2em 0 0.3em;
+  line-height: 1.2;
+}
+.prose-doc h1 { font-size: 1.6rem; }
+.prose-doc h2 { font-size: 1.35rem; }
+.prose-doc h3 { font-size: 1.15rem; }
+.prose-doc p { margin: 0.45em 0; line-height: 1.7; }
+.prose-doc ul, .prose-doc ol { padding-left: 1.3em; margin: 0.45em 0; }
+.prose-doc ul { list-style: "– "; }
+.prose-doc ol { list-style: decimal; }
+.prose-doc li { margin: 0.2em 0; line-height: 1.65; padding-left: 0.2em; }
+.prose-doc li::marker { color: var(--fg-faint); }
+.prose-doc strong { font-weight: 600; }
+.prose-doc em { font-family: var(--font-display); font-size: 1.08em; }
+.prose-doc code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--bg-hover);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+.prose-doc > :first-child { margin-top: 0; }
+
+/* Film stock for the timeline: sprocket holes punched along both edges. */
+.film-strip {
+  background-color: var(--film);
+  background-image:
+    linear-gradient(90deg, rgba(242, 239, 232, 0.55) 0 7px, transparent 7px 14px),
+    linear-gradient(90deg, rgba(242, 239, 232, 0.55) 0 7px, transparent 7px 14px);
+  background-size: 14px 5px, 14px 5px;
+  background-position: 3px 5px, 3px calc(100% - 5px);
+  background-repeat: repeat-x;
+}
+
+@keyframes ink-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.ink-pulse { animation: ink-pulse 1.8s ease-in-out infinite; }
+
+@keyframes draw {
+  from { stroke-dashoffset: var(--len, 1200); }
+  to { stroke-dashoffset: 0; }
+}
+.draw-line {
+  stroke-dasharray: var(--len, 1200);
+  animation: draw 3.2s cubic-bezier(0.6, 0, 0.2, 1) both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up { animation: fade-up 0.35s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-line, .fade-up, .ink-pulse { animation: none; }
+  .gallery-img { transition: none; }
+}
