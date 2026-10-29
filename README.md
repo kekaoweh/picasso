@@ -87,5 +87,5 @@ five built-in styles, and users can create their own on the Styles page.
 
 ## Author
 
-**Keka Oweh** ([github.com/kekaoweh](https://github.com/kekaoweh)). Picasso is designed and owned by Keka
-Oweh. Development is assisted by Claude, which is credited as a co-author on individual commits.
+**Keka Oweh** ([github.com/kekaoweh](https://github.com/kekaoweh)). Picasso is designed, built and owned by
+Keka Oweh.
