@@ -49,6 +49,31 @@ class Candidate:
         return f"[{self.id}] {self.provider} · {self.kind} · {dur} · {size} · {self.license}{by} · “{self.title[:90]}”"
 
 
+# Effect plates and keying footage look empty or broken when cut in on their own.
+UTILITY_TAGS = ("overlay", "green screen", "greenscreen", "chroma", "alpha channel", "transparent", "particles",
+                "light leak", "bokeh overlay", "lower third", "countdown", "glitch effect")
+
+
+def is_utility_clip(tags: str) -> bool:
+    t = (tags or "").lower()
+    return any(u in t for u in UTILITY_TAGS)
+
+
+STOPWORDS = {"a", "an", "the", "of", "in", "on", "at", "with", "and", "or", "to", "from", "by", "for", "into", "over",
+             "under", "shot", "shots", "footage", "video", "clip", "slow", "motion", "close", "up", "wide"}
+
+
+def broader_queries(query: str) -> list[str]:
+    """Progressively shorter keyword versions of a descriptive query, for libraries that match every word."""
+    words = [w for w in re.findall(r"[\w'-]+", query.lower()) if w not in STOPWORDS]
+    out = []
+    for n in (4, 3, 2):
+        q = " ".join(words[:n])
+        if q and q != query.lower() and q not in out:
+            out.append(q)
+    return out
+
+
 def _strip_html(text: str) -> str:
     return html.unescape(re.sub(r"<[^>]+>", "", text or "")).strip()
 
@@ -107,16 +132,36 @@ class Pixabay(Provider):
     name, kinds, needs_key = "Pixabay", ("video", "image"), "PIXABAY_API_KEY"
 
     async def search(self, client, query, kind, orientation, n):
+        # Pixabay requires every word to match, so descriptive queries can come back thin;
+        # top up with shorter keyword versions until there are enough results.
+        out: list[Candidate] = []
+        seen: set[str] = set()
+        for q in [query, *broader_queries(query)]:
+            for c in await self._search_once(client, q, kind, orientation, n):
+                if c.page_url not in seen:
+                    seen.add(c.page_url)
+                    out.append(c)
+            if len(out) >= n:
+                break
+        return out[:n]
+
+    async def _search_once(self, client, query, kind, orientation, n):
         params = {"key": os.environ["PIXABAY_API_KEY"], "q": query[:100], "per_page": max(3, n), "safesearch": "true"}
         if kind == "video":
             r = await client.get("https://pixabay.com/api/videos/", params=params)
             r.raise_for_status()
             out = []
             for h in r.json().get("hits", []):
-                vids = h.get("videos", {})
-                best = vids.get("large") if vids.get("large", {}).get("url") else vids.get("medium", {})
-                if not best.get("url"):
+                if is_utility_clip(h.get("tags", "")):
                     continue
+                vids = h.get("videos", {})
+                renditions = [v for v in (vids.get("large"), vids.get("medium"), vids.get("small")) if v and v.get("url")]
+                if not renditions:
+                    continue
+                # Picasso renders at 1080p: take the smallest rendition that is still at least
+                # 1080p on its short side, so 4K sources download ~4x faster with no visible loss.
+                sharp = [v for v in renditions if min(v.get("width") or 0, v.get("height") or 0) >= 1080]
+                best = min(sharp, key=lambda v: v.get("width") or 0) if sharp else renditions[0]
                 out.append(Candidate(
                     provider=self.name, kind="video", title=h.get("tags", "Pixabay video"), page_url=h.get("pageURL", ""),
                     preview_url=best.get("thumbnail") or vids.get("medium", {}).get("thumbnail", ""), author=h.get("user", ""),

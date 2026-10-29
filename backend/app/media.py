@@ -176,7 +176,9 @@ def _text_filter(clip: Clip, style: Style, width: int, height: int, workdir: Pat
     if style.caption_box and overlay.style != "title":
         parts += ["box=1", "boxcolor=0x14120f@0.48", f"boxborderw={int(fontsize * 0.45)}|{int(fontsize * 0.7)}"]
     else:
-        parts += ["shadowcolor=black@0.55", "shadowx=0", f"shadowy={max(1, fontsize // 22)}"]
+        # Bare captions over busy, bright footage need a soft outline as well as a shadow to stay legible.
+        parts += ["borderw=" + str(max(1, fontsize // 28)), "bordercolor=black@0.4",
+                  "shadowcolor=black@0.6", "shadowx=0", f"shadowy={max(2, fontsize // 18)}"]
     return "drawtext=" + ":".join(parts)
 
 
